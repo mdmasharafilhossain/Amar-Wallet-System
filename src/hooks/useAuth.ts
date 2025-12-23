@@ -88,7 +88,7 @@ useEffect(() => {
   
   if (isSuccess && profile) {
     
-    dispatch(setCredentials({ user: profile, token: "" })); // token can be null
+    dispatch(setCredentials({ user: profile})); // token can be null
   }
 }, [isSuccess, profile, dispatch]);
 
