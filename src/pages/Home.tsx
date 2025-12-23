@@ -450,7 +450,7 @@ const Home: React.FC = () => {
   </div>
 </section>
 
-{/* Scroll Hint */}
+
 
 
     </div>
