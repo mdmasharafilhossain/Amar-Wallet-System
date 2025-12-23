@@ -113,6 +113,28 @@ const Home: React.FC = () => {
           </Link>
         )}
       </section>
+      {/* Services Section */}
+<section className="py-20 bg-[#2D4754] text-[#E6D5B8]">
+  <div className="max-w-7xl mx-auto px-4 text-center">
+    <h2 className="text-3xl font-bold mb-12">Our Core Services</h2>
+    <div className="grid md:grid-cols-4 gap-8">
+      {[
+        'Money Transfer',
+        'Cash In',
+        'Cash Out',
+        'Agent Payments',
+      ].map((service, i) => (
+        <div
+          key={i}
+          className="bg-white/10 p-6 rounded-xl hover:scale-105 transition"
+        >
+          <h3 className="font-semibold text-lg">{service}</h3>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
     </div>
   )
 }
