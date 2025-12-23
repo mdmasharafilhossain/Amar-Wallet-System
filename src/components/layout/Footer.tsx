@@ -37,10 +37,11 @@ const Footer: React.FC = () => {
           <div className="text-center md:text-left">
             <h4 className="text-gold-500 font-semibold mb-4">Services</h4>
             <ul className="space-y-2">
-              <li>Send Money</li>
-              <li>Cash In</li>
-              <li>Cash Out</li>
-              <li>Bill Payment</li>
+              <li><Link to="user/dashboard">Send Money</Link></li>
+              <li><Link to="user/dashboard">Cash In</Link></li>
+              <li><Link to="user/dashboard">Cash Out</Link></li>
+              <li><Link to="agent/dashboard">Agent Functionality</Link></li>
+              
             </ul>
           </div>
 
