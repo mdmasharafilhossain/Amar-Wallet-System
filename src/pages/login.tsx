@@ -65,9 +65,9 @@ const Login: React.FC = () => {
 
   const handleRoleLogin = (role: 'user' | 'admin' | 'agent') => {
     const credentials = {
-      user: { phone: '1234567890', password: 'userpassword' },
-      admin: { phone: '0987654321', password: 'adminpassword' },
-      agent: { phone: '1122334455', password: 'agentpassword' },
+      user: { phone: '01641749267', password: '123456mM$' },
+      admin: { phone: '01562874512', password: 'Mahi@2221' },
+      agent: { phone: '01842749267', password: '123456mM$' },
     };
     setValue('phone', credentials[role].phone);
     setValue('password', credentials[role].password);

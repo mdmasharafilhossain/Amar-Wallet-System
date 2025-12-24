@@ -83,8 +83,8 @@ npm run dev
 ## Demo Credentials
 
 ### Admin
-- **Number:** 01345678901  
-- **Password:** admin1234  
+- **Number:** 01562874512  
+- **Password:** Mahi@2221  
 
 ### User
 - **Number:** 01641749267  
