@@ -135,7 +135,7 @@ useEffect(() => {
   const logoutUser = async () => {
     try {
       await logoutApi().unwrap();
-      // 🔥 CLEAR ALL RTK QUERY CACHE
+      //  CLEAR ALL RTK QUERY CACHE
     dispatch(walletApi.util.resetApiState());
     dispatch(adminApi.util.resetApiState());
     dispatch(transactionApi.util.resetApiState());
