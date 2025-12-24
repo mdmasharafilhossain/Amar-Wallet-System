@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import {
@@ -9,6 +10,18 @@ import LoadingScreen from "../../shared/LoaingScreen";
 import { useGetProfileQuery } from "../../redux/features/auth/auth.api";
 import { motion } from "framer-motion";
 import { Users, UserCheck, ReceiptText } from "lucide-react";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+} from "recharts";
 
 const AdminDashboard: React.FC = () => {
   const { data } = useGetProfileQuery();
@@ -60,6 +73,18 @@ const AdminDashboard: React.FC = () => {
       icon: <ReceiptText className="w-8 h-8 text-[#E6D5B8]" />,
     },
   ];
+const pieData = [
+  { name: "Users", value: userCount },
+  { name: "Agents", value: agentCount },
+];
+
+const lineData =
+  transactionsData?.transactions?.slice(0, 10).map((tx: any, index: number) => ({
+    index: index + 1,
+    amount: tx.amount,
+  })) || [];
+
+const COLORS = ["#E6D5B8", "#C8A978"];
 
   return (
     <div className="space-y-6">
@@ -102,6 +127,91 @@ const AdminDashboard: React.FC = () => {
           </motion.div>
         ))}
       </div>
+      {/* Charts Section */}
+<div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+
+  {/* 3D Pie Chart */}
+  <motion.div
+    initial={{ opacity: 0, scale: 0.95 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 0.5 }}
+    className="bg-[#355676] rounded-2xl p-6 shadow-lg text-[#E6D5B8]"
+  >
+    <h3 className="text-lg font-semibold mb-4">
+      User vs Agent Distribution
+    </h3>
+
+    <div className="h-64">
+      <ResponsiveContainer width="100%" height="100%">
+        <PieChart>
+          <Pie
+            data={pieData}
+            cx="50%"
+            cy="50%"
+            innerRadius={50}
+            outerRadius={90}
+            paddingAngle={5}
+            dataKey="value"
+            isAnimationActive
+          >
+            {pieData.map((_, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={COLORS[index % COLORS.length]}
+              />
+            ))}
+          </Pie>
+          <Tooltip
+            contentStyle={{
+              backgroundColor: "#355676",
+              border: "none",
+              color: "#E6D5B8",
+            }}
+          />
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
+  </motion.div>
+
+  {/* Line Chart */}
+  <motion.div
+    initial={{ opacity: 0, scale: 0.95 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 0.5, delay: 0.2 }}
+    className="bg-[#355676] rounded-2xl p-6 shadow-lg text-[#E6D5B8]"
+  >
+    <h3 className="text-lg font-semibold mb-4">
+      Transaction Trend
+    </h3>
+
+    <div className="h-64">
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={lineData}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#E6D5B8" opacity={0.1} />
+          <XAxis dataKey="index" stroke="#E6D5B8" />
+          <YAxis stroke="#E6D5B8" />
+          <Tooltip
+            contentStyle={{
+              backgroundColor: "#355676",
+              border: "none",
+              color: "#E6D5B8",
+            }}
+          />
+          <Line
+            type="monotone"
+            dataKey="amount"
+            stroke="#C8A978"
+            strokeWidth={3}
+            dot={{ r: 4 }}
+            activeDot={{ r: 6 }}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  </motion.div>
+
+</div>
+
     </div>
   );
 };
