@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import {
@@ -6,7 +6,7 @@ import {
   useGetAllUsersQuery,
 } from "../../redux/features/auth/admin.api";
 import { useGetAllTransactionsQuery } from "../../redux/features/auth/transaction.Api";
-import LoadingScreen from "../../shared/LoaingScreen";
+
 import { useGetProfileQuery } from "../../redux/features/auth/auth.api";
 import { motion } from "framer-motion";
 import { Users, UserCheck, ReceiptText } from "lucide-react";
@@ -22,6 +22,7 @@ import {
   YAxis,
   CartesianGrid,
 } from "recharts";
+import Skeleton from "../../shared/Skeleton";
 
 const AdminDashboard: React.FC = () => {
   const { data } = useGetProfileQuery();
@@ -40,8 +41,65 @@ const AdminDashboard: React.FC = () => {
     useGetAllTransactionsQuery({ page: 1, limit: 100 });
 
   if (usersLoading || agentsLoading || transactionsLoading) {
-    return <LoadingScreen />;
-  }
+  return (
+    <div className="space-y-6 p-6 bg-gradient-to-b from-[#355676] via-[#2b4455] to-[#1f2e3d] min-h-screen">
+
+      {/* Header Skeleton */}
+      <div className="bg-[#355676] rounded-2xl p-6 space-y-4">
+        <Skeleton className="h-7 w-1/3" />
+        <Skeleton className="h-4 w-1/2" />
+      </div>
+
+      {/* Stat Cards Skeleton */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {[1, 2, 3].map((i) => (
+          <div
+            key={i}
+            className="bg-[#355676] rounded-2xl p-6 flex items-center justify-between"
+          >
+            <div className="space-y-3">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-8 w-24" />
+            </div>
+            <Skeleton className="h-10 w-10 rounded-full" />
+          </div>
+        ))}
+      </div>
+
+      {/* Monthly Summary Skeleton */}
+      <div className="bg-[#355676] rounded-2xl p-6 space-y-4">
+        <Skeleton className="h-5 w-1/3" />
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <Skeleton key={i} className="h-16 w-full" />
+          ))}
+        </div>
+      </div>
+
+      {/* Growth Cards Skeleton */}
+      <div className="bg-[#355676] rounded-2xl p-6 space-y-4">
+        <Skeleton className="h-5 w-1/3" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {[1, 2].map((i) => (
+            <Skeleton key={i} className="h-20 w-full" />
+          ))}
+        </div>
+      </div>
+
+      {/* Charts Skeleton */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {[1, 2].map((i) => (
+          <div key={i} className="bg-[#355676] rounded-2xl p-6 space-y-4">
+            <Skeleton className="h-5 w-1/3" />
+            <Skeleton className="h-64 w-full" />
+          </div>
+        ))}
+      </div>
+
+    </div>
+  );
+}
+
 
   // Counts from backend totals
   const userCount = usersData?.total || 0;
