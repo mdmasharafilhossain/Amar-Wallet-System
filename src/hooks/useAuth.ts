@@ -72,6 +72,9 @@ import {
 } from "../redux/features/auth/auth.api";
 import toast from "react-hot-toast";
 import type { LoginRequest, RegisterRequest } from "../types";
+import { walletApi } from "../redux/features/auth/wallet.api";
+import { adminApi } from "../redux/features/auth/admin.api";
+import { transactionApi } from "../redux/features/auth/transaction.Api";
 
 export const useAuth = () => {
   const dispatch = useDispatch();
@@ -132,6 +135,10 @@ useEffect(() => {
   const logoutUser = async () => {
     try {
       await logoutApi().unwrap();
+      // 🔥 CLEAR ALL RTK QUERY CACHE
+    dispatch(walletApi.util.resetApiState());
+    dispatch(adminApi.util.resetApiState());
+    dispatch(transactionApi.util.resetApiState());
       dispatch(logout());
       toast.success("Logged out successfully");
     } catch (error: any) {
