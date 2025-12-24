@@ -172,6 +172,35 @@ const avgTransaction =
     ))}
   </div>
 </div>
+{/* Wallet Growth Insights */}
+<div className="bg-[#355676] rounded-2xl p-6 shadow-lg text-[#E6D5B8] mt-6">
+  <h3 className="text-lg font-semibold mb-6">
+    Wallet Balance Growth
+  </h3>
+
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    {/* Total Growth */}
+    <div className="bg-[#2D4754] rounded-xl p-5">
+      <p className="text-sm opacity-80">Total Growth</p>
+      <p className="text-2xl font-bold text-[#C8A978]">
+        ৳ {totalBalanceGrowth}
+      </p>
+    </div>
+
+    {/* Avg Transaction */}
+    <div className="bg-[#2D4754] rounded-xl p-5">
+      <p className="text-sm opacity-80">Average Transaction</p>
+      <p className="text-2xl font-bold text-[#C8A978]">
+        ৳ {avgTransaction}
+      </p>
+    </div>
+
+   
+
+  </div>
+</div>
+
 
       {/* Charts Section */}
 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
