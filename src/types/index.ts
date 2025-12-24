@@ -98,3 +98,6 @@ export type ErrorPageProps = {
   message?: string;
   code?: string | number;
 };
+export interface SkeletonProps {
+  className?: string;
+}
