@@ -35,7 +35,7 @@ const UserDashboard: React.FC = () => {
   const [typeFilter, setTypeFilter] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const limit = 5;
+  const limit = 10;
 
   const { data, isLoading } = useGetMyTransactionsQuery({
     page,
@@ -52,14 +52,13 @@ const UserDashboard: React.FC = () => {
   const [showAddMoney, setShowAddMoney] = useState(false);
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [showSendMoney, setShowSendMoney] = useState(false);
-// ===== Overview Stats =====
+
 const totalTransactions = data?.total || 0;
 
 const totalAmount =
   transactions.reduce((sum: number, tx: any) => sum + (tx.amount || 0), 0);
 
-// ===== Pie Chart Data (Transaction Types) =====
-// ===== Transaction Type Counts =====
+
 const typeCounts: Record<string, number> = {};
 
 transactions.forEach((tx: any) => {
@@ -68,7 +67,7 @@ transactions.forEach((tx: any) => {
 
 const totalTx = transactions.length;
 
-// ===== Pie Chart Data (Percentage) =====
+// Pie Chart Data (Percentage)
 const pieData = Object.keys(typeCounts).map((type) => ({
   name: type.replace("-", " "),
   value: Math.round((typeCounts[type] / totalTx) * 100),
@@ -76,16 +75,16 @@ const pieData = Object.keys(typeCounts).map((type) => ({
 
 
 const PIE_COLORS: Record<string, string> = {
-  "top up": "#22c55e",     // green → incoming
-  "cash in": "#16a34a",    // darker green
-  withdraw: "#ef4444",     // red → outgoing
-  "cash out": "#dc2626",   // darker red
-  send: "#8b5cf6",         // purple → transfer
+  "top up": "#22c55e",    
+  "cash in": "#16a34a",    
+  withdraw: "#ef4444",   
+  "cash out": "#dc2626",   
+  send: "#8b5cf6",         
 };
 
 
 
-// ===== Line Chart Data (Recent Balance Flow) =====
+// Line Chart Data (Recent Balance Flow) 
 let runningBalance = wallet?.balance || 0;
 
 const lineData =
