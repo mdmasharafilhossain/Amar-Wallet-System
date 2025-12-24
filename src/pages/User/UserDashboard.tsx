@@ -59,22 +59,31 @@ const totalAmount =
   transactions.reduce((sum: number, tx: any) => sum + (tx.amount || 0), 0);
 
 // ===== Pie Chart Data (Transaction Types) =====
-const pieData = [
-  {
-    name: "Top-up",
-    value: transactions.filter((t: any) => t.type === "top-up").length,
-  },
-  {
-    name: "Withdraw",
-    value: transactions.filter((t: any) => t.type === "withdraw").length,
-  },
-  {
-    name: "Send",
-    value: transactions.filter((t: any) => t.type === "send").length,
-  },
-];
+// ===== Transaction Type Counts =====
+const typeCounts: Record<string, number> = {};
 
-const COLORS = ["#E6D5B8", "#C8A978", "#9CA3AF"];
+transactions.forEach((tx: any) => {
+  typeCounts[tx.type] = (typeCounts[tx.type] || 0) + 1;
+});
+
+const totalTx = transactions.length;
+
+// ===== Pie Chart Data (Percentage) =====
+const pieData = Object.keys(typeCounts).map((type) => ({
+  name: type.replace("-", " "),
+  value: Math.round((typeCounts[type] / totalTx) * 100),
+}));
+
+
+const PIE_COLORS: Record<string, string> = {
+  "top up": "#22c55e",     // green → incoming
+  "cash in": "#16a34a",    // darker green
+  withdraw: "#ef4444",     // red → outgoing
+  "cash out": "#dc2626",   // darker red
+  send: "#8b5cf6",         // purple → transfer
+};
+
+
 
 // ===== Line Chart Data (Recent Balance Flow) =====
 let runningBalance = wallet?.balance || 0;
@@ -144,6 +153,97 @@ const lineData =
       onSendMoney={() => setShowSendMoney(true)}
     />
   </motion.div>
+{/* Analytics Section */}
+<div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+  {/* Pie Chart */}
+  <motion.div
+    initial={{ opacity: 0, scale: 0.95 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 0.5 }}
+    className="bg-[#355676]/90 rounded-2xl p-6 shadow-xl text-[#E6D5B8] backdrop-blur-md"
+  >
+    <h3 className="text-lg font-semibold mb-4">
+      Transaction Breakdown
+    </h3>
+
+    <div className="h-64">
+      <ResponsiveContainer width="100%" height="100%">
+        <PieChart>
+         <Pie
+  data={pieData}
+  dataKey="value"
+  innerRadius={55}
+  outerRadius={90}
+  paddingAngle={4}
+  label={({ name, value }) =>
+    value !== undefined ? `${name}: ${value}%` : ""
+  }
+>
+  {pieData.map((entry, index) => (
+    <Cell
+      key={`cell-${index}`}
+      fill={PIE_COLORS[entry.name] || "#E6D5B8"}
+    />
+  ))}
+</Pie>
+
+
+          <Tooltip
+  formatter={(value?: number) =>
+    value !== undefined ? `${value}%` : "0%"
+  }
+  contentStyle={{
+    backgroundColor: "#355676",
+    border: "none",
+    color: "#E6D5B8",
+  }}
+/>
+
+
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
+  </motion.div>
+
+  {/* Line Chart */}
+  <motion.div
+    initial={{ opacity: 0, scale: 0.95 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 0.5, delay: 0.2 }}
+    className="bg-[#355676]/90 rounded-2xl p-6 shadow-xl text-[#E6D5B8] backdrop-blur-md"
+  >
+    <h3 className="text-lg font-semibold mb-4">
+      Balance Trend
+    </h3>
+
+    <div className="h-64">
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={lineData}>
+          <CartesianGrid stroke="#E6D5B8" opacity={0.1} />
+          <XAxis dataKey="step" stroke="#E6D5B8" />
+          <YAxis stroke="#E6D5B8" />
+          <Tooltip
+            contentStyle={{
+              backgroundColor: "#355676",
+              border: "none",
+              color: "#E6D5B8",
+            }}
+          />
+          <Line
+            type="monotone"
+            dataKey="balance"
+            stroke="#C8A978"
+            strokeWidth={3}
+            dot={{ r: 4 }}
+            activeDot={{ r: 6 }}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  </motion.div>
+
+</div>
 
   {/* Transactions Section */}
   <motion.div
