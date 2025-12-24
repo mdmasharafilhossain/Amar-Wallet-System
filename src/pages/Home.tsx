@@ -6,7 +6,20 @@ import type { RootState } from '../redux/store/store'
 
 
 const Home: React.FC = () => {
-  const { isAuthenticated } = useSelector((state: RootState) => state.auth)
+  const { isAuthenticated,user } = useSelector((state: RootState) => state.auth)
+const getDashboardPath = () => {
+  if (!user) return "/login";
+
+  switch (user.role) {
+    case "admin":
+      return "/admin/dashboard";
+    case "agent":
+      return "/agent/dashboard";
+    case "user":
+    default:
+      return "/user/dashboard";
+  }
+};
 
   return (
     <div className="min-h-screen bg-[#355676] text-[#E6D5B8]">
@@ -45,11 +58,12 @@ const Home: React.FC = () => {
               </>
             ) : (
               <Link
-                to="/user/dashboard"
+                to={getDashboardPath()}
                 className="bg-[#E6D5B8] text-[#355676] px-8 py-3 rounded-lg font-semibold shadow-md 
                            hover:bg-[#C8A978] hover:text-white transition-all duration-300"
               >
-                Go to Dashboard
+                Go to {user?.role === "admin" ? "Admin" : user?.role === "agent" ? "Agent" : "User"} Dashboard
+
               </Link>
             )}
           </div>
