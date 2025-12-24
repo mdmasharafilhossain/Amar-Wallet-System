@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
@@ -9,6 +10,18 @@ import { useGetMyTransactionsQuery } from "../../redux/features/auth/transaction
 import { useGetProfileQuery } from "../../redux/features/auth/auth.api";
 import CashInModal from "../../components/wallet/CashInModal";
 import CashOutModal from "../../components/wallet/CashOutModal";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+} from "recharts";
 
 const AgentDashboard: React.FC = () => {
   const { data: user } = useGetProfileQuery();
@@ -33,6 +46,45 @@ const AgentDashboard: React.FC = () => {
 
   const [showCashIn, setShowCashIn] = useState(false);
   const [showCashOut, setShowCashOut] = useState(false);
+// ===== Overview Stats =====
+const totalTransactions = data?.total || 0;
+
+const totalCashIn = transactions
+  .filter((t: any) => t.type === "cash-in")
+  .reduce((sum: number, t: any) => sum + (t.amount || 0), 0);
+
+const totalCashOut = transactions
+  .filter((t: any) => t.type === "cash-out")
+  .reduce((sum: number, t: any) => sum + (t.amount || 0), 0);
+
+// ===== Pie Chart Data (Percentage) =====
+const cashInCount = transactions.filter((t: any) => t.type === "cash-in").length;
+const cashOutCount = transactions.filter((t: any) => t.type === "cash-out").length;
+const totalCount = cashInCount + cashOutCount || 1;
+
+const pieData = [
+  { name: "Cash In", value: Math.round((cashInCount / totalCount) * 100) },
+  { name: "Cash Out", value: Math.round((cashOutCount / totalCount) * 100) },
+];
+
+const PIE_COLORS: Record<string, string> = {
+  "Cash In": "#22c55e",
+  "Cash Out": "#ef4444",
+};
+
+// ===== Line Chart Data (Agent Flow) =====
+let running = 0;
+
+const lineData = [...transactions]
+  .slice(0, 7)
+  .reverse()
+  .map((tx: any, index: number) => {
+    running += tx.type === "cash-out" ? -tx.amount : tx.amount;
+    return {
+      step: `T${index + 1}`,
+      balance: running,
+    };
+  });
 
   return (
     <div className="space-y-6 p-4 sm:p-6 md:p-10 bg-gradient-to-b from-[#355676] via-[#2b4455] to-[#1f2e3d] min-h-screen">
@@ -51,6 +103,25 @@ const AgentDashboard: React.FC = () => {
           Manage your wallet and track your transactions effortlessly
         </p>
       </motion.div>
+{/* Agent Overview Cards */}
+<div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+  {[
+    { title: "Total Transactions", value: totalTransactions },
+    { title: "Total Cash In", value: `৳${totalCashIn}` },
+    { title: "Total Cash Out", value: `৳${totalCashOut}` },
+  ].map((item, i) => (
+    <motion.div
+      key={i}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: i * 0.15 }}
+      className="bg-[#355676]/90 backdrop-blur-md rounded-2xl p-5 text-[#E6D5B8] shadow-lg hover:scale-105 transition"
+    >
+      <p className="text-sm opacity-80">{item.title}</p>
+      <p className="text-2xl font-bold text-[#C8A978]">{item.value}</p>
+    </motion.div>
+  ))}
+</div>
 
       {/* Wallet Section */}
       <motion.div
