@@ -48,7 +48,7 @@ const WalletCard: React.FC<WalletCardProps> = ({
       </div>
 
       {/* Buttons */}
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-3">
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-5">
         {(wallet?.user?.role === "agent" || wallet?.user?.role === "admin") && (
           <button
             onClick={onAddMoney}

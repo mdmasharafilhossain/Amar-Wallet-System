@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 
 import { motion } from "framer-motion";
@@ -12,6 +13,18 @@ import SendMoneyModal from "../../components/wallet/SendMoneyModal";
 import { useGetWalletQuery } from "../../redux/features/auth/wallet.api";
 import { useGetMyTransactionsQuery } from "../../redux/features/auth/transaction.Api";
 import { useGetProfileQuery } from "../../redux/features/auth/auth.api";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+} from "recharts";
 
 const UserDashboard: React.FC = () => {
   
@@ -39,6 +52,44 @@ const UserDashboard: React.FC = () => {
   const [showAddMoney, setShowAddMoney] = useState(false);
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [showSendMoney, setShowSendMoney] = useState(false);
+// ===== Overview Stats =====
+const totalTransactions = data?.total || 0;
+
+const totalAmount =
+  transactions.reduce((sum: number, tx: any) => sum + (tx.amount || 0), 0);
+
+// ===== Pie Chart Data (Transaction Types) =====
+const pieData = [
+  {
+    name: "Top-up",
+    value: transactions.filter((t: any) => t.type === "top-up").length,
+  },
+  {
+    name: "Withdraw",
+    value: transactions.filter((t: any) => t.type === "withdraw").length,
+  },
+  {
+    name: "Send",
+    value: transactions.filter((t: any) => t.type === "send").length,
+  },
+];
+
+const COLORS = ["#E6D5B8", "#C8A978", "#9CA3AF"];
+
+// ===== Line Chart Data (Recent Balance Flow) =====
+let runningBalance = wallet?.balance || 0;
+
+const lineData =
+  [...transactions]
+    .slice(0, 7)
+    .reverse()
+    .map((tx: any, index: number) => {
+      runningBalance += tx.type === "withdraw" ? -tx.amount : tx.amount;
+      return {
+        step: `T${index + 1}`,
+        balance: runningBalance,
+      };
+    });
 
   return (
     <div className="space-y-10 p-4 md:p-10 bg-gradient-to-b from-[#355676] via-[#2b4455] to-[#1f2e3d] min-h-screen" id="quick-actions">
@@ -57,6 +108,25 @@ const UserDashboard: React.FC = () => {
       Manage your wallet and track your transactions effortlessly
     </p>
   </motion.div>
+{/* Overview Cards */}
+<div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+  {[
+    { title: "Balance", value: `৳${wallet?.balance || 0}` },
+    { title: "Transactions", value: totalTransactions },
+    { title: "Total Volume", value: `৳${totalAmount}` },
+  ].map((item, i) => (
+    <motion.div
+      key={i}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: i * 0.15 }}
+      className="bg-[#355676]/90 backdrop-blur-md rounded-2xl p-5 text-[#E6D5B8] shadow-lg hover:scale-105 transition"
+    >
+      <p className="text-sm opacity-80">{item.title}</p>
+      <p className="text-2xl font-bold text-[#C8A978]">{item.value}</p>
+    </motion.div>
+  ))}
+</div>
 
   {/* Wallet Section */}
   <motion.div
