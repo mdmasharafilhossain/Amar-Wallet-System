@@ -151,7 +151,7 @@ if (isAgentDashboardLoading) {
         className="bg-[#355676]/90 shadow-xl rounded-2xl p-6 sm:p-8 text-center text-[#E6D5B8] backdrop-blur-md"
       >
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold drop-shadow-lg">
-          Welcome back, {user?.name} 👋
+          Welcome to Agent Dashbaord, {user?.name} 👋
         </h1>
         <p className="text-sm sm:text-base md:text-lg mt-2 sm:mt-3 text-[#C8A978] font-medium">
           Manage your wallet and track your transactions effortlessly
