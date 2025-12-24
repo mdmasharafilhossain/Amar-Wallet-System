@@ -85,6 +85,28 @@ const lineData =
   })) || [];
 
 const COLORS = ["#E6D5B8", "#C8A978"];
+// Monthly transaction summary
+const monthlySummary: Record<string, number> = {};
+
+transactionsData?.transactions?.forEach((tx: any) => {
+  const month = new Date(tx.createdAt).toLocaleString("default", {
+    month: "short",
+  });
+  monthlySummary[month] =
+    (monthlySummary[month] || 0) + (tx.amount || 0);
+});
+
+const monthlyStats = Object.entries(monthlySummary).slice(0, 6);
+const totalBalanceGrowth =
+  transactionsData?.transactions?.reduce(
+    (sum: number, tx: any) => sum + (tx.amount || 0),
+    0
+  ) || 0;
+
+const avgTransaction =
+  transactionCount > 0
+    ? Math.round(totalBalanceGrowth / transactionCount)
+    : 0;
 
   return (
     <div className="space-y-6">
@@ -127,6 +149,30 @@ const COLORS = ["#E6D5B8", "#C8A978"];
           </motion.div>
         ))}
       </div>
+      {/* Monthly Transaction Summary */}
+<div className="bg-[#355676] rounded-2xl p-6 shadow-lg text-[#E6D5B8] mt-6">
+  <h3 className="text-lg font-semibold mb-6">
+    Monthly Transaction Summary
+  </h3>
+
+  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+    {monthlyStats.map(([month, amount], i) => (
+      <motion.div
+        key={month}
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: i * 0.1 }}
+        className="bg-[#2D4754] rounded-xl p-4 text-center hover:scale-105 transition"
+      >
+        <p className="text-sm opacity-80">{month}</p>
+        <p className="text-lg font-bold text-[#C8A978]">
+          ৳ {amount}
+        </p>
+      </motion.div>
+    ))}
+  </div>
+</div>
+
       {/* Charts Section */}
 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
 
