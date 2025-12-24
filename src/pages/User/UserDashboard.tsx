@@ -170,7 +170,7 @@ if (isDashboardLoading) {
     className="bg-[#355676]/90 shadow-xl rounded-2xl p-6 md:p-8 text-center text-[#E6D5B8] backdrop-blur-md"
   >
     <h1 className="text-2xl md:text-4xl font-extrabold drop-shadow-lg">
-      Welcome back, {user?.name} 👋
+      Welcome To User Dashboard, {user?.name} 👋
     </h1>
     <p className="text-[#C8A978] mt-2 md:mt-3 text-sm md:text-lg font-medium">
       Manage your wallet and track your transactions effortlessly
