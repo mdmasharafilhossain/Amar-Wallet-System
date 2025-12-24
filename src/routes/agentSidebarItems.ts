@@ -12,7 +12,7 @@ export const agentSidebarItems: ISidebarItem[] = [
     
     items: [
       {
-        title: "Dashboard",
+        title: "Agent Dashboard",
         url: "/agent/dashboard",
         component: AgentDashboard
       },
