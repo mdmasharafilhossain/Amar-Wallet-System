@@ -138,6 +138,93 @@ const lineData = [...transactions]
           onSendMoney={() => {}}
         />
       </motion.div>
+{/* Agent Analytics */}
+<div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+  {/* Pie Chart */}
+  <motion.div
+    initial={{ opacity: 0, scale: 0.95 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 0.5 }}
+    className="bg-[#355676]/90 rounded-2xl p-6 shadow-xl text-[#E6D5B8] backdrop-blur-md"
+  >
+    <h3 className="text-lg font-semibold mb-4">
+      Cash In vs Cash Out
+    </h3>
+
+    <div className="h-64">
+      <ResponsiveContainer width="100%" height="100%">
+        <PieChart>
+          <Pie
+            data={pieData}
+            dataKey="value"
+            innerRadius={55}
+            outerRadius={90}
+            paddingAngle={4}
+            label={({ name, value }) =>
+              value !== undefined ? `${name}: ${value}%` : ""
+            }
+          >
+            {pieData.map((entry, index) => (
+              <Cell
+                key={index}
+                fill={PIE_COLORS[entry.name]}
+              />
+            ))}
+          </Pie>
+          <Tooltip
+            formatter={(value?: number) =>
+              value !== undefined ? `${value}%` : "0%"
+            }
+            contentStyle={{
+              backgroundColor: "#355676",
+              border: "none",
+              color: "#E6D5B8",
+            }}
+          />
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
+  </motion.div>
+
+  {/* Line Chart */}
+  <motion.div
+    initial={{ opacity: 0, scale: 0.95 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 0.5, delay: 0.2 }}
+    className="bg-[#355676]/90 rounded-2xl p-6 shadow-xl text-[#E6D5B8] backdrop-blur-md"
+  >
+    <h3 className="text-lg font-semibold mb-4">
+      Cash Flow Trend
+    </h3>
+
+    <div className="h-64">
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={lineData}>
+          <CartesianGrid stroke="#E6D5B8" opacity={0.1} />
+          <XAxis dataKey="step" stroke="#E6D5B8" />
+          <YAxis stroke="#E6D5B8" />
+          <Tooltip
+            contentStyle={{
+              backgroundColor: "#355676",
+              border: "none",
+              color: "#E6D5B8",
+            }}
+          />
+          <Line
+            type="monotone"
+            dataKey="balance"
+            stroke="#C8A978"
+            strokeWidth={3}
+            dot={{ r: 4 }}
+            activeDot={{ r: 6 }}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  </motion.div>
+
+</div>
 
       {/* Transactions Section */}
       <motion.div
