@@ -35,7 +35,7 @@ The Digital Wallet frontend enables:
 - **MongoDB + Mongoose** – database  
 - **JWT + bcrypt** – authentication & security  
 
-**Backend Documentation:** [Digital Wallet API Docs](https://github.com/mdmasharafilhossain/Digital-Wallet-System-API)
+**Backend Documentation:** [Aamr Wallet API Docs](https://github.com/mdmasharafilhossain/Digital-Wallet-System-API)
 
 
 ## Features  
@@ -77,7 +77,7 @@ npm run dev
 
 ## Live URLs
 
-- **Frontend:** [Digital Wallet Live](https://digital-wallet-client-beta.vercel.app)  
+- **Frontend:** [Aamr Wallet Live](https://digital-wallet-client-beta.vercel.app)  
 - **Backend:** [Aamr Wallet Backend Live](https://wallet-management-system-server.vercel.app)  
 
 ## Demo Credentials
