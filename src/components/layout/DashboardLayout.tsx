@@ -79,7 +79,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
       <div className="flex-1 flex flex-col lg:ml-64">
         {/* Top Navbar (mobile only) */}
         <header className="lg:hidden flex items-center justify-between bg-[#1c3144] border-b border-[#C8A978]/30 p-4">
-          {/* <h1 className="text-lg font-semibold">Dashboard</h1> */}
+          
            <img className="h-12 w-16" src={logo} alt="" />
           <button onClick={() => setIsOpen(true)}>
             <FiMenu size={24} />
